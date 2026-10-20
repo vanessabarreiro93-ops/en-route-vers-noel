@@ -1,0 +1,133 @@
+
+
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>En route vers Noël</title>
+
+<style>
+
+body{margin:0;background:#fff5e6;color:#54352d;font-family:Arial,sans-serif;text-align:center}
+
+header{padding:20px 10px}
+
+h1{color:#a32636;margin-bottom:8px}
+
+p{line-height:1.5}
+
+.couronne{width:min(92vw,390px);aspect-ratio:1;margin:20px auto;position:relative;border-radius:50%;background:#246644;border:12px solid #165035;box-sizing:border-box;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(6,1fr);align-items:center;justify-items:center;padding:12px}
+
+.carte{width:48px;height:48px;border:2px solid #f7d778;border-radius:12px;background:#fff1bd;color:#8d2432;font-size:18px;font-weight:bold;box-shadow:0 2px 4px #143c2b;cursor:pointer}
+
+.carte.ouverte{background:#f7d778;color:#175334}
+
+.carte:nth-child(1){grid-area:1/2}.carte:nth-child(2){grid-area:1/3}
+
+.carte:nth-child(3){grid-area:2/4}.carte:nth-child(4){grid-area:3/4}
+
+.carte:nth-child(5){grid-area:4/4}.carte:nth-child(6){grid-area:5/4}
+
+.carte:nth-child(7){grid-area:6/3}.carte:nth-child(8){grid-area:6/2}
+
+.carte:nth-child(9){grid-area:5/1}.carte:nth-child(10){grid-area:4/1}
+
+.carte:nth-child(11){grid-area:3/1}.carte:nth-child(12){grid-area:2/1}
+
+.carte:nth-child(n+13){display:none}
+
+.bougies{font-size:30px;margin:15px}
+
+#message{padding:18px;margin:15px auto;max-width:340px;background:white;border-radius:16px;min-height:65px}
+
+button:focus{outline:3px solid #a32636}
+
+footer{padding:15px;font-size:13px}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>🎄 En route vers Noël 🎄</h1>
+
+<p>Chaque jour, ouvre une petite fenêtre pour préparer ton cœur à la naissance de Jésus !</p>
+
+<div class="bougies" id="bougies">🕯️ 🕯️ 🕯️ 🕯️</div>
+
+</header>
+
+<div class="couronne" id="couronne"></div>
+
+<div id="message">✨ Choisis une case pour découvrir ton message du jour !</div>
+
+<footer>Paroisse Notre-Dame de Lourdes<br>Pavillons-sous-Bois ❤️</footer>
+
+<script>
+
+const messages=[
+
+"Préparons nos cœurs à Noël !","Aujourd’hui, partage un sourire.","Dis merci pour une belle chose.","Aide quelqu’un à la maison.",
+
+"Prends un moment de silence.","Fais un dessin pour Jésus.","Téléphone ou pense à une personne aimée.","Range quelque chose avec joie.",
+
+"Écoute quelqu’un attentivement.","Fais une gentille surprise.","Prie pour ta famille.","Chante un chant de Noël.",
+
+"Partage quelque chose avec quelqu’un.","Dis un mot gentil.","Prends soin de la création.","Pardonne ou fais la paix.",
+
+"Remercie une personne qui t’aide.","Fais une prière pour les malades.","Prépare une décoration de Noël.","Raconte une histoire de Jésus.",
+
+"Fais une bonne action en secret.","Pense aux personnes seules.","Prépare ton cœur dans la joie.",
+
+"Joyeux Noël ! Jésus est né ! Que sa paix remplisse ta maison. ❤️"
+
+];
+
+const cle="avent-noel-progression";
+
+let ouverts=JSON.parse(localStorage.getItem(cle)||"[]");
+
+const couronne=document.getElementById("couronne");
+
+for(let i=1;i<=24;i++){
+
+ const b=document.createElement("button");
+
+ b.className="carte"+(ouverts.includes(i)?" ouverte":"");
+
+ b.textContent=i;
+
+ b.setAttribute("aria-label","Ouvrir la case "+i);
+
+ b.onclick=()=>{
+
+  if(!ouverts.includes(i)){ouverts.push(i);localStorage.setItem(cle,JSON.stringify(ouverts));}
+
+  b.classList.add("ouverte");
+
+  document.getElementById("message").textContent="Jour "+i+" : "+messages[i-1];
+
+  document.getElementById("bougies").textContent="🕯️".repeat(Math.min(4,Math.ceil(ouverts.length/6)))+" ✨";
+
+  if(i===24)document.getElementById("message").textContent="🌟 Joyeux Noël ! Jésus est né ! Imagine Marie, Joseph, les animaux et les mages autour de la crèche. Que la joie de Jésus habite ta famille ! ❤️";
+
+ };
+
+ couronne.appendChild(b);
+
+}
+
+</script>
+
+</body>
+
+</html>
